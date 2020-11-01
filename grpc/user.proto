@@ -1,0 +1,70 @@
+syntax = "proto3";
+
+// user 包
+package user;
+
+// 指定 go 的包路径及包名
+// option go_package="github.com/isMe/grpcdemo.git/grpc/user;user";
+
+// User 服务及服务接口的定义
+service User {
+  rpc UserIndex(UserIndexRequest) returns (UserIndexResponse) {}
+  rpc UserId(UserIdRequest) returns (UserIdResponse){}
+  rpc UserDelete(UserDeleteRequest) returns (UserDeleteResponse) {}
+  rpc UserInsert(UserInsertRequest) returns (UserInsertResponse){}
+}
+
+// 枚举类型
+enum EnumUserSex {
+  SEX_FEMALE = 0; // 枚举类型必须以 0 起始
+  SEX_MALE = 1;
+}
+
+// 用户实体模型
+message UserEntity {
+  string name = 1;
+  int32 age = 2;
+  repeated string hobby = 3;
+  EnumUserSex sex = 4;
+}
+
+// User 服务的各个接口的请求/响应结构
+message UserIndexRequest {
+  int32 page = 1;
+  int32 pageSize = 2;
+}
+
+message UserIndexResponse {
+  int32 err = 1;
+  string msg = 2;
+  // 返回一个 UserEntity 对象的列表数据
+  repeated UserEntity data = 3;
+}
+
+message UserIdRequest {
+  int64 id = 1;
+}
+
+message UserIdResponse {
+  int32 err = 1;
+  string msg = 2;
+  UserEntity data = 3;
+}
+
+message UserDeleteRequest {
+  int64 id = 1;
+}
+
+message UserDeleteResponse {
+  int32 err = 1;
+  string msg = 2;
+}
+
+message UserInsertRequest {
+  UserEntity data = 1;
+}
+
+message UserInsertResponse {
+  int32 err = 1;
+  string msg = 2;
+}
